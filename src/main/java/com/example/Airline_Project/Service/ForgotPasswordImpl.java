@@ -29,8 +29,8 @@ public class ForgotPasswordImpl implements ForgotPasswordService {
 
     @Override
     public ForgotPassswordToken findbyId(String id) throws Exception {
-        Optional<ForgotPassswordToken> token = passwordRepository.findById(id);
-        return token.orElse(null);
+        return passwordRepository.findById(id)
+                .orElseThrow(() -> new Exception("Token not found"));
     }
 
     @Override

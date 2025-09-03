@@ -27,10 +27,5 @@ public class Airport {
     private String city;
     private String country;
 
-    @PrePersist
-    public void generateCode() {
-        if (this.code == null || this.code.isEmpty()) {
-            this.code = "AIR" + new Random().nextInt(10000);
-        }
-    }
+
 }

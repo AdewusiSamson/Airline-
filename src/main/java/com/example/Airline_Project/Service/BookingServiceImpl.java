@@ -3,24 +3,28 @@ package com.example.Airline_Project.Service;
 import com.example.Airline_Project.Repository.BookingRepository;
 import com.example.Airline_Project.model.Booking;
 import com.example.Airline_Project.model.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-
+@Service
 public class BookingServiceImpl implements BookingService{
     @Autowired
     private BookingRepository bookingRepository;
     UserService userService;
+
+    @Transactional
     @Override
     public Booking createBooking(Long flightId, String seatNumber, String FirstName,String LastName, User user) {
        Booking  booking =new Booking();
        booking.setStatus(Booking.BookingStatus.CONFIRMED);
-       booking.setPassengerFirstName(booking.getPassengerFirstName());
-       booking.setPassengerLastName(booking.getPassengerLastName());
+       booking.setPassengerFirstName(FirstName);
+       booking.setPassengerLastName(LastName);
        booking.setPnr(generatePnr());
        booking.setCreatedAt(LocalDateTime.now());
        booking.setSeatNumber(seatNumber);

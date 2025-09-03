@@ -15,7 +15,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Service
 public class FlightServiceImpl implements FlightService {
 
     @Autowired

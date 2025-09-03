@@ -3,11 +3,12 @@ package com.example.Airline_Project.Service;
 import com.example.Airline_Project.Repository.AirportRepository;
 import com.example.Airline_Project.model.Airport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-
+@Service
 public class AirportServiceImpl implements AirportService{
  @Autowired
   private   AirportRepository airportRepository;;
