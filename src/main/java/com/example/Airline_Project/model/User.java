@@ -6,6 +6,8 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 @Entity
 @Table(name = "users")
 @Data
@@ -17,7 +19,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @Embedded
+    private twoFactorAuth twoFactorAuth = new twoFactorAuth();
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -26,10 +29,13 @@ public class User {
 
     private String firstName;
     private String lastName;
+    private String loyaltyTier = "STANDARD";
+    private Integer milesBalance = 0;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role; // ROLE_CUSTOMER, ROLE_ADMIN
+    private Role role= Role.ROLE_CUSTOMER;; // ROLE_CUSTOMER, ROLE_ADMIN
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude // Prevents circular reference in Lombok's toString()

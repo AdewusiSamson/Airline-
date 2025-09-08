@@ -5,7 +5,10 @@ import com.example.Airline_Project.Repository.UserRepository;
 import com.example.Airline_Project.Response.AuthResponse;
 import com.example.Airline_Project.Service.CustomUserDetailsSerivce;
 import com.example.Airline_Project.Service.EmailService;
+import com.example.Airline_Project.Service.SocialAuthService;
+import com.example.Airline_Project.Service.TwoFactorotpService;
 import com.example.Airline_Project.configuratiion.JwtProvider;
+import com.example.Airline_Project.model.TwoFactorOTP;
 import com.example.Airline_Project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,9 +27,12 @@ public class AuthController {
     private UserRepository userRepository;
     @Autowired
     private EmailService emailService;
-
+    @Autowired
+    private TwoFactorotpService twoFactorotpService;
     @Autowired
     private CustomUserDetailsSerivce customUserDetailsSerivce;
+    @Autowired
+    private SocialAuthService socialAuthService;
 
 
     @PostMapping("/signup")
@@ -41,8 +44,7 @@ public class AuthController {
         }
         User newUser = new User();
         newUser.setEmail(user.getEmail());
-        newUser.setFirstName(user.getFirstName()
-        );
+        newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setPassword(user.getPassword());
         User savedUser = userRepository.save(newUser);
@@ -80,12 +82,24 @@ public class AuthController {
 
         String jwt = JwtProvider.generateTokens(auth);
         User authuser = userRepository.findByEmail(username);
+        if (user.getTwoFactorAuth().isEnabled()) {
+            AuthResponse res = new AuthResponse();
+            res.setMessage("Two factor auth is enabled");
+            res.setTwoFactorAuthEnabled(true);
+            String otp = OtpUtils.generateOTP();
 
-        String otp = OtpUtils.generateOTP();
-
+            TwoFactorOTP oldTwoFactorOtp = twoFactorotpService.findByUser(authuser.getId());
+            if (oldTwoFactorOtp != null) {
+                twoFactorotpService.deleteTwoFactorOtp(oldTwoFactorOtp);
+            }
+            TwoFactorOTP newTwoFactorOTP = twoFactorotpService.createTwoFactorOtp(
+                    authuser, otp, jwt);
             emailService.sendOtpEmail(username, otp);
 
+            res.setSession(newTwoFactorOTP.getId());
+            return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
 
+        }
         AuthResponse res = new AuthResponse();
         res.setJwt(jwt);
         res.setStatus(true);
@@ -108,4 +122,19 @@ public class AuthController {
         }
         return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
     }
+
+    @PostMapping("/two-factor/otp/{otp}")
+
+    public ResponseEntity<AuthResponse> VerifySigninOtp(@PathVariable String otp, @RequestParam String id) throws Exception {
+        TwoFactorOTP twoFactorOTP = twoFactorotpService.findById(id);
+        if (twoFactorotpService.verifyTwoFactorOtp(twoFactorOTP, otp)) {
+            AuthResponse res = new AuthResponse();
+            res.setMessage("Two factor authentication Completed");
+            res.setTwoFactorAuthEnabled(true);
+            res.setJwt(twoFactorOTP.getJwt());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        throw new Exception("invalid otp");
+    }
+//TODO social login
 }

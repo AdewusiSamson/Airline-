@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
+
+    List<Booking>  findByBookingDateBetween(java.time.LocalDateTime start, java.time.LocalDateTime end);
     List<Booking> findByUser(User user);
     Optional<Booking> findByPnr(String pnr);
     Boolean existsByPnr(String pnr);

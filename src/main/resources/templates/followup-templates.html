@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Exclusive Offer</title>
+    <style>/* Similar styling as welcome template */</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎁 Special Offer</h1>
+    </div>
+
+    <div class="content">
+        <h2>Hello <span th:text="${name}">Valued Customer</span>,</h2>
+        <p>As promised, here's your first exclusive offer as an Emirates Airlines subscriber:</p>
+
+        <div style="text-align: center; margin: 30px 0; padding: 20px; background-color: #fff; border: 2px dashed #d71921;">
+            <h3>Enjoy 15% OFF your next flight!</h3>
+            <p style="font-size: 24px; font-weight: bold; color: #d71921;">
+                Use code: <span th:text="${discountCode}">WELCOME15</span>
+            </p>
+            <p>Valid for 7 days from today</p>
+        </div>
+
+        <p>Why book with Emirates?</p>
+        <ul>
+            <li>Award-winning service</li>
+            <li>World-class amenities</li>
+            <li>Extensive global network</li>
+            <li>Flexible booking options</li>
+        </ul>
+
+        <p style="text-align: center;">
+            <a href="https://yourairlinewebsite.com/book" class="button">Book Your Flight</a>
+        </p>
+
+        <p>This offer expires in 7 days, so don't miss out!</p>
+        <p>Happy travels,<br><strong>The Emirates Airlines Team</strong></p>
+    </div>
+
+    <div class="footer">
+        <!-- Similar footer as welcome template -->
+    </div>
+</div>
+</body>
+</html>

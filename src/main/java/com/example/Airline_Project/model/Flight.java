@@ -51,6 +51,10 @@ public class Flight {
     @ToString.Exclude
     private List<seats> seats = new ArrayList<>();
 
+
+    private int Size;
+
+
     @OneToMany(mappedBy = "flight")
     @ToString.Exclude
     private List<Booking> bookings = new ArrayList<>();

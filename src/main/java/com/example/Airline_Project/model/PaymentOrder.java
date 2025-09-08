@@ -10,6 +10,7 @@ public class PaymentOrder {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long amount;
+
     private PaymentOrderStatus status;
     private PaymentMethod paymentMethod;
     private String reference;

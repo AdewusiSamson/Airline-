@@ -1,34 +1,15 @@
 package com.example.Airline_Project.Service;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSendException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
+import java.io.UnsupportedEncodingException;
 
-@Service
-public class EmailService {
-    private JavaMailSender javaMailSender;
-
-    public void sendOtpEmail(String email, String otp) throws MessagingException {
-        MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMailMessage, "utf-8");
-        String subject = "verify OTP";
-        String text = "your veriication code is" + otp;
-
-
-        mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(text);
-        mimeMessageHelper.setTo(email);
-
-
-        try {
-            javaMailSender.send(mimeMailMessage);
-        } catch (MailException e) {
-            throw new MailSendException(e.getMessage());
-        }
-    }
+public interface EmailService {
+    void sendWelcomeEmail(String toEmail, String subscriberName, String unsubscribeToken) throws UnsupportedEncodingException;
+    void sendFirstFollowupEmail(String toEmail, String subscriberName) throws UnsupportedEncodingException;
+    void sendMonthlyNewsletter(String toEmail, String subscriberName) throws UnsupportedEncodingException;
+    void sendBirthdayEmail(String toEmail, String subscriberName) throws UnsupportedEncodingException;
+    void sendReengagementEmail(String toEmail, String subscriberName) throws UnsupportedEncodingException;
+    void sendOtpEmail(String toEmail, String otpCode) throws UnsupportedEncodingException;
+    void sendBookingConfirmation(String toEmail, String passengerName, String bookingReference) throws UnsupportedEncodingException;
+    void sendPasswordResetEmail(String toEmail, String resetToken) throws UnsupportedEncodingException;
+    void sendGenericEmail(String toEmail, String subject, String htmlContent) throws UnsupportedEncodingException;
 }
-

@@ -38,6 +38,7 @@ public class Booking {
     @Column(nullable = false)
     private String passengerLastName;
 
+
     // We denormalize this for data integrity. The seat might change status, but this booking is for *this* seat.
     @Column(nullable = false)
     private String seatNumber;
@@ -50,9 +51,10 @@ public class Booking {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+   private PaymentOrder payment;
 
-//    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
-//    private Payment payment;
+    private double TotalAmount;
 
     public enum BookingStatus {
         CONFIRMED, CANCELLED

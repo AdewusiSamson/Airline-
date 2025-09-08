@@ -1,8 +1,10 @@
 package com.example.Airline_Project.controller;
 
+import com.example.Airline_Project.Service.BookingPrefrenceService;
 import com.example.Airline_Project.Service.BookingService;
 import com.example.Airline_Project.Service.UserService;
 import com.example.Airline_Project.model.Booking;
+import com.example.Airline_Project.model.BookingPreference;
 import com.example.Airline_Project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -19,6 +22,8 @@ public class BookingController {
     private BookingService bookingService;
 @Autowired
     private UserService userService;
+@Autowired
+private BookingPrefrenceService bookingPreferenceService;
     @PostMapping
     public ResponseEntity<Booking> createBooking(
             @RequestParam Long flightId,
@@ -61,5 +66,50 @@ public class BookingController {
         }
     }
 
+    @PostMapping("/{bookingId}/preferences")
+    public ResponseEntity<BookingPreference> saveBookingPreferences(
+            @PathVariable Long bookingId,
+            @RequestBody BookingPreference preference,
+            @RequestHeader("Authorization") String jwt) {
+        try {
+            User user = userService.findUserProfileByJwt(jwt);
+            Booking booking = bookingService.getBookingByPnr(bookingId.toString());
 
+            // Verify that the booking belongs to the user
+            if (!booking.getUser().getId().equals(user.getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            }
+
+            preference.setBooking(booking);
+            BookingPreference savedPreference = bookingPreferenceService.savePreference(preference);
+            return ResponseEntity.ok(savedPreference);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    // Add this endpoint to get booking preferences
+    @GetMapping("/{bookingId}/preferences")
+    public ResponseEntity<BookingPreference> getBookingPreferences(
+            @PathVariable Long bookingId,
+            @RequestHeader("Authorization") String jwt) {
+        try {
+            User user = userService.findUserProfileByJwt(jwt);
+            Booking booking = bookingService.getBookingByPnr(bookingId.toString());
+
+            // Verify that the booking belongs to the user
+            if (!booking.getUser().getId().equals(user.getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            }
+
+            Optional<BookingPreference> preference = bookingPreferenceService.findByBookingId(bookingId);
+            if (preference.isPresent()) {
+                return ResponseEntity.ok(preference.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to SkyJet Airlines</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #d71921; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; background-color: #f9f9f9; }
+        .footer { padding: 20px; text-align: center; font-size: 12px; color: #666; }
+        .button { background-color: #d71921; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>✈ SkyJet Airlines</h1>
+    </div>
+
+    <div class="content">
+        <h2>Welcome Aboard, <span th:text="${name}">Valued Customer</span>!</h2>
+        <p>Thank you for subscribing to SkyJet Airlines newsletters! We're thrilled to welcome you to our exclusive community of travelers.</p>
+
+        <p>As a subscriber, you'll be the first to know about:</p>
+        <ul>
+            <li>Exclusive flight deals and promotions</li>
+            <li>Special member-only discounts</li>
+            <li>New destination announcements</li>
+            <li>Travel tips and insider guides</li>
+            <li>Early access to sales and special offers</li>
+        </ul>
+
+        <p>Your next adventure is just an email away. Keep an eye on your inbox for our next update!</p>
+
+        <p style="text-align: center;">
+            <a th:href="${websiteUrl}" class="button">Explore Destinations</a>
+        </p>
+
+        <p>Blue skies ahead,</p>
+        <p><strong>The SkyJet Airlines Team</strong></p>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 SkyJet Airlines. All rights reserved.</p>
+        <p>
+            <a th:href="${websiteUrl + '/unsubscribe?token=' + unsubscribeToken}">Unsubscribe</a> |
+            <a th:href="${websiteUrl + '/privacy'}">Privacy Policy</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>
