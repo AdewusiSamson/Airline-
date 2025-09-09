@@ -70,5 +70,21 @@ public class PaymentController {
     }
     //TODO webhook for payment verification
     //TODO create service for processing refunds and payment verifications
+// Add this to your PaymentController
+    @PostMapping("/webhook/{provider}")
+    public ResponseEntity<String> handleWebhook(
+            @PathVariable String provider,
+            @RequestBody String payload,
+            @RequestHeader(value = "x-paystack-signature", required = false) String paystackSignature,
+            @RequestHeader(value = "verif-hash", required = false) String flutterwaveSignature) {
 
+        try {
+            String signature = "paystack".equalsIgnoreCase(provider) ? paystackSignature : flutterwaveSignature;
+            paymentService.processWebhookEvent(payload, signature, provider);
+            return ResponseEntity.ok("Webhook processed successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error processing webhook: " + e.getMessage());
+        }
+    }
 }
+//TODO Implement processWebhookEvent in PaymentService to handle webhook logic

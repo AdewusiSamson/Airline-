@@ -13,6 +13,12 @@ public interface PaymentService {
 
     PaymentResponse createPaystackPaymentLink(User user, Long amount) throws Exception;
 
+
+    void processWebhookEvent(String payload, String signature, String provider) throws Exception;
+
     PaymentResponse createFlutterwavePaymentLink(User user, Long amount, Long orderId) throws Exception;
 
+    PaymentResponse confirmPayment(String reference, User user) throws Exception;
+
+    PaymentResponse processRefund(String reference, User user) throws Exception;
 }

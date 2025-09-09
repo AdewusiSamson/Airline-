@@ -3,6 +3,8 @@ package com.example.Airline_Project.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 public class PaymentOrder {
@@ -14,12 +16,16 @@ public class PaymentOrder {
     private PaymentOrderStatus status;
     private PaymentMethod paymentMethod;
     private String reference;
+    private String refundReference;
+    private String webhookReference;
+    private LocalDateTime webhookReceivedAt;
+    private Integer webhookAttempts = 0;
 
     @ManyToOne
     private User user;
 
     public enum PaymentOrderStatus{
-        PENDING,FAILED,SUCCESS
+        PENDING,FAILED,SUCCESS,REFUNDED
     }
      public enum PaymentMethod{
             PAYSTACK,FLUTTERWAVE
