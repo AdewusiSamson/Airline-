@@ -51,10 +51,11 @@ public class Booking {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    @OneToOne
    private PaymentOrder payment;
 
     private double TotalAmount;
+    private LocalDateTime bookingDate;
 
     public enum BookingStatus {
         CONFIRMED, CANCELLED

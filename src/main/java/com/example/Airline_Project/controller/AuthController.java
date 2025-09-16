@@ -4,7 +4,7 @@ import com.example.Airline_Project.OtpUtils;
 import com.example.Airline_Project.Repository.UserRepository;
 import com.example.Airline_Project.Response.AuthResponse;
 import com.example.Airline_Project.Service.*;
-import com.example.Airline_Project.configuratiion.JwtProvider;
+import com.example.Airline_Project.configuration.JwtProvider;
 import com.example.Airline_Project.model.SocialAuth;
 import com.example.Airline_Project.model.TwoFactorOTP;
 import com.example.Airline_Project.model.User;
@@ -137,7 +137,7 @@ public class AuthController {
             AuthResponse res = new AuthResponse();
             res.setMessage("Two factor authentication Completed");
             res.setTwoFactorAuthEnabled(true);
-            res.setJwt(twoFactorOTP.getJwt());
+              res.setJwt(twoFactorOTP.getJwt());
             return new ResponseEntity<>(HttpStatus.OK);
         }
         throw new Exception("invalid otp");

@@ -1,11 +1,9 @@
 package com.example.Airline_Project.Service;
 
-import com.example.Airline_Project.configuratiion.emailConfig;
+import com.example.Airline_Project.configuration.emailConfig;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;

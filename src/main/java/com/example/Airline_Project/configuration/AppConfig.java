@@ -1,4 +1,4 @@
-package com.example.Airline_Project.configuratiion;
+package com.example.Airline_Project.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

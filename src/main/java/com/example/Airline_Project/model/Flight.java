@@ -35,6 +35,8 @@ public class Flight {
     private Airport destination;
 
     @Column(nullable = false)
+    private long flightId;
+    @Column(nullable = false)
     private LocalDateTime departureTime;
 
     @Column(nullable = false)
@@ -49,10 +51,11 @@ public class Flight {
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<seats> seats = new ArrayList<>();
+    private List<Seat> seats = new ArrayList<>();
 
 
     private int Size;
+
 
 
     @OneToMany(mappedBy = "flight")

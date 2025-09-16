@@ -74,7 +74,7 @@ public class UserController {
 
     }
 
-    @PatchMapping("/auth/users/reset-password/verify-otp/")
+    @PatchMapping("/api/users/enable-two-factor/verify-otp/{otp}")
     public ResponseEntity<ApiResponse> resetPassword(
             @RequestParam String id,
             @RequestBody ResetPasswordRequest request,

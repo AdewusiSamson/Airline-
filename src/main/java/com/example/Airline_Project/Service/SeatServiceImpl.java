@@ -3,7 +3,8 @@ package com.example.Airline_Project.Service;
 
 
 import com.example.Airline_Project.Repository.seatsRepository;
-import com.example.Airline_Project.model.seats;
+import com.example.Airline_Project.model.Seat;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,18 +22,18 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     @Transactional
-    public seats holdSeat(Long flightId, String seatNumber, String userEmail) {
+    public Seat holdSeat(Long flightId, String seatNumber, String userEmail) {
         // Find the seat with pessimistic locking to prevent concurrent access
-        seats seat = seatRepository.findByFlightIdAndSeatNumberWithLock(flightId, seatNumber)
+        Seat seat = seatRepository.findByFlightIdAndSeatNumberWithLock(flightId, seatNumber)
                 .orElseThrow(() -> new EntityNotFoundException("Seat not found"));
 
         // Check if seat is available or has an expired hold
-        if (seat.getStatus() == seats.SeatStatus.AVAILABLE ||
-                (seat.getStatus() == seats.SeatStatus.HELD &&
+        if (seat.getStatus() == Seat.SeatStatus.AVAILABLE ||
+                (seat.getStatus() == Seat.SeatStatus.HELD &&
                         seat.getHeldAt().isBefore(LocalDateTime.now().minusMinutes(10)))) {
 
             // Update seat status and hold information
-            seat.setStatus(seats.SeatStatus.HELD);
+            seat.setStatus(Seat.SeatStatus.HELD);
             seat.setHeldAt(LocalDateTime.now());
             seat.setHeldBy(userEmail);
 
@@ -45,11 +46,11 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public void releaseSeat(Long seatId) {
-        seats seat = seatRepository.findById(seatId)
+        Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Seat not found"));
 
-        if (seat.getStatus() == seats.SeatStatus.HELD) {
-            seat.setStatus(seats.SeatStatus.AVAILABLE);
+        if (seat.getStatus() == Seat.SeatStatus.HELD) {
+            seat.setStatus(Seat.SeatStatus.AVAILABLE);
             seat.setHeldAt(null);
             seat.setHeldBy(null);
             seatRepository.save(seat);
@@ -59,11 +60,11 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public void confirmSeat(Long seatId) {
-        seats seat = seatRepository.findById(seatId)
+        Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Seat not found"));
 
-        if (seat.getStatus() == seats.SeatStatus.HELD) {
-            seat.setStatus(seats.SeatStatus.BOOKED);
+        if (seat.getStatus() == Seat.SeatStatus.HELD) {
+            seat.setStatus(Seat.SeatStatus.BOOKED);
             seatRepository.save(seat);
         } else {
             throw new IllegalStateException("Seat is not in HELD status");
@@ -75,11 +76,11 @@ public class SeatServiceImpl implements SeatService {
     @Transactional
     public void releaseExpiredHolds() {
         LocalDateTime tenMinutesAgo = LocalDateTime.now().minusMinutes(10);
-        List<seats> expiredSeats = seatRepository.findByStatusAndHeldAtBefore(
-                seats.SeatStatus.HELD, tenMinutesAgo);
+        List<Seat> expiredSeats = seatRepository.findByStatusAndHeldAtBefore(
+                Seat.SeatStatus.HELD, tenMinutesAgo);
 
-        for (seats seat : expiredSeats) {
-            seat.setStatus(seats.SeatStatus.AVAILABLE);
+        for (Seat seat : expiredSeats) {
+            seat.setStatus(Seat.SeatStatus.AVAILABLE);
             seat.setHeldAt(null);
             seat.setHeldBy(null);
         }

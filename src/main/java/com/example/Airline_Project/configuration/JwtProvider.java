@@ -1,4 +1,4 @@
-package com.example.Airline_Project.configuratiion;
+package com.example.Airline_Project.configuration;
 
 
 import io.jsonwebtoken.Claims;
@@ -6,13 +6,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
+@Component
 public class JwtProvider {
     private static final SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRETE_KEY.getBytes());
 
@@ -22,7 +23,7 @@ public class JwtProvider {
         String jwt = Jwts.builder()
                 .issuedAt(new Date())
                 .expiration(new Date(new Date().getTime() + 86400000))
-                .claim("email", authorities)
+                .claim("email", auth.getName())
                 .claim("authorities", roles)
                 .signWith(key)
                 .compact();

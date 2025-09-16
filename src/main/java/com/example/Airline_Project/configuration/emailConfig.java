@@ -1,4 +1,4 @@
-package com.example.Airline_Project.configuratiion;
+package com.example.Airline_Project.configuration;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

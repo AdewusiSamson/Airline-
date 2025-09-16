@@ -1,8 +1,10 @@
 package com.example.Airline_Project.Service;
 
+import com.example.Airline_Project.Domain.VerificationType;
 import com.example.Airline_Project.Repository.UserRepository;
-import com.example.Airline_Project.configuratiion.JwtProvider;
+import com.example.Airline_Project.configuration.JwtProvider;
 import com.example.Airline_Project.model.User;
+import com.example.Airline_Project.model.twoFactorAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,20 @@ public class UserServiceImpl implements UserService {
         }
         return user.get();
     }
+    @Override
+    public User enableTwoFactorAuthentication(VerificationType verificationType, User user, String sendTo) {
+        twoFactorAuth twoFactorAuth = new twoFactorAuth();
+        twoFactorAuth.setEnabled(true);
+        twoFactorAuth.setSendTo(verificationType);
+        user.setTwoFactorAuth(twoFactorAuth);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updatePassword(User user, String newPassword) {
+        user.setPassword(newPassword);
+        return userRepository.save(user);
+    }
+
 
 }

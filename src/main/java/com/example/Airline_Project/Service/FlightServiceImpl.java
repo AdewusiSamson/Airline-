@@ -5,7 +5,8 @@ import com.example.Airline_Project.Repository.FlightRepository;
 import com.example.Airline_Project.model.Airport;
 import com.example.Airline_Project.model.Flight;
 
-import com.example.Airline_Project.model.seats;
+import com.example.Airline_Project.model.Seat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class FlightServiceImpl implements FlightService {
         return flights.stream()
                 .filter(flight -> flight.getSeats().stream()
                         .anyMatch(seat -> seat.getSeatClass().name().equals(seatClass) &&
-                                seat.getStatus() == seats.SeatStatus.AVAILABLE)
+                                seat.getStatus() == Seat.SeatStatus.AVAILABLE)
                 )
                 .collect(Collectors.toList());
     }
@@ -48,7 +49,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Flight getFlightById(Long flightId) throws Exception {
-             Flight  flight =flightRepository.findByFlightById(flightId);
+             Flight  flight =flightRepository.findByFlightId(flightId);
                 if(flight==null){
                     throw new Exception("Flight not found with id: " + flightId);
                 }
@@ -56,7 +57,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<seats> getSeatsForFlight(Long flightId) throws Exception {
+    public List<Seat> getSeatsForFlight(Long flightId) throws Exception {
         Flight flight = getFlightById(flightId);
         return flight.getSeats();
     }

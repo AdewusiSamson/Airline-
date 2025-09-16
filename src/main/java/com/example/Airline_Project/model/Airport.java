@@ -26,6 +26,6 @@ public class Airport {
 
     private String city;
     private String country;
-
+    
 
 }

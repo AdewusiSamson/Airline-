@@ -2,7 +2,8 @@ package com.example.Airline_Project.controller;
 
 import com.example.Airline_Project.Service.FlightService;
 import com.example.Airline_Project.model.Flight;
-import com.example.Airline_Project.model.seats;
+import com.example.Airline_Project.model.Seat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -45,9 +46,9 @@ public class FlightController {
     }
 
     @GetMapping("/{flightId}/seats")
-    public ResponseEntity<List<seats>> getFlightSeats(@PathVariable Long flightId) {
+    public ResponseEntity<List<Seat>> getFlightSeats(@PathVariable Long flightId) {
         try {
-            List<seats> seats = flightService.getSeatsForFlight(flightId);
+            List<Seat> seats = flightService.getSeatsForFlight(flightId);
             return ResponseEntity.ok(seats);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

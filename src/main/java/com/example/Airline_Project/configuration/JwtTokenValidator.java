@@ -1,4 +1,4 @@
-package com.example.Airline_Project.configuratiion;
+package com.example.Airline_Project.configuration;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

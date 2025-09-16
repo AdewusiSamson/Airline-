@@ -1,4 +1,4 @@
-package com.example.Airline_Project.configuratiion;
+package com.example.Airline_Project.configuration;
 
 public class JwtConstant {
     public static final String jwt_Header = "Authorization";

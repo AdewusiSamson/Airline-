@@ -2,7 +2,9 @@ package com.example.Airline_Project.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,8 @@ public class User {
     private String lastName;
     private String loyaltyTier = "STANDARD";
     private Integer milesBalance = 0;
+
+    private LocalDateTime createdDate;
 
 
     @Enumerated(EnumType.STRING)

@@ -23,6 +23,10 @@ public class PaymentOrder {
 
     @ManyToOne
     private User user;
+//
+//    @OneToOne
+//    @JoinColumn(name = "booking_id")
+//    private Booking booking;
 
     public enum PaymentOrderStatus{
         PENDING,FAILED,SUCCESS,REFUNDED
