@@ -21,6 +21,8 @@ import java.util.Base64;
 
 @RestController
 @RequestMapping("/api/webhooks")
+@CrossOrigin(origins = "http://localhost:5173")
+
 public class WebhookController {
 
     @Autowired
